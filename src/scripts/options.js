@@ -6,6 +6,7 @@ export const defaults = {
     repeat: false,
     smooth: false,
     smoothMobile: false,
+    autoStart: true,
     direction: 'vertical',
     inertia: 1,
     class: 'is-inview',

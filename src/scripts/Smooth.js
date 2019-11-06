@@ -24,7 +24,7 @@ export default class extends Core {
         this.hasScrollTicking = false;
         this.parallaxElements = [];
         this.inertiaRatio = 1;
-        this.stop = false;
+        this.stop = this.autoStart;
 
         this.checkKey = this.checkKey.bind(this);
         window.addEventListener('keydown', this.checkKey, false);
@@ -70,7 +70,7 @@ export default class extends Core {
         this.initScrollBar();
         this.addSections();
         this.addElements();
-        this.detectElements();
+        if( this.autoStart ) this.detectElements();
         this.transformElements(true);
 
         super.init();

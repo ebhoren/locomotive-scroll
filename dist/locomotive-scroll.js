@@ -161,6 +161,7 @@
     repeat: false,
     smooth: false,
     smoothMobile: false,
+    autoStart: true,
     direction: 'vertical',
     inertia: 1,
     "class": 'is-inview',
@@ -875,7 +876,7 @@
       value: function init() {
         this.instance.scroll.y = window.pageYOffset;
         this.addElements();
-        this.detectElements();
+        if (this.autoStart) this.detectElements();
 
         _get(_getPrototypeOf(_default.prototype), "init", this).call(this);
       }
@@ -1235,7 +1236,6 @@
           this.lastDownDeltas.shift();
           return this.isInertia(-1);
         }
-        return false;
       };
 
       Lethargy.prototype.isInertia = function(direction) {
@@ -1359,7 +1359,8 @@
           preventTouch: false,
           unpreventTouchClass: 'vs-touchmove-allowed',
           limitInertia: false,
-          useKeyboard: true
+          useKeyboard: true,
+          useTouch: true
       }, options);
 
       if (this.options.limitInertia) this._lethargy = new Lethargy();
@@ -1486,7 +1487,7 @@
       if(support.hasWheelEvent) this.el.addEventListener('wheel', this._onWheel, this.listenerOptions);
       if(support.hasMouseWheelEvent) this.el.addEventListener('mousewheel', this._onMouseWheel, this.listenerOptions);
 
-      if(support.hasTouch) {
+      if(support.hasTouch && this.options.useTouch) {
           this.el.addEventListener('touchstart', this._onTouchStart, this.listenerOptions);
           this.el.addEventListener('touchmove', this._onTouchMove, this.listenerOptions);
       }
@@ -1607,7 +1608,7 @@
       _this.hasScrollTicking = false;
       _this.parallaxElements = [];
       _this.inertiaRatio = 1;
-      _this.stop = false;
+      _this.stop = _this.autoStart;
       _this.checkKey = _this.checkKey.bind(_assertThisInitialized(_this));
       window.addEventListener('keydown', _this.checkKey, false);
       return _this;
@@ -1653,7 +1654,7 @@
         this.initScrollBar();
         this.addSections();
         this.addElements();
-        this.detectElements();
+        if (this.autoStart) this.detectElements();
         this.transformElements(true);
 
         _get(_getPrototypeOf(_default.prototype), "init", this).call(this);

@@ -15,7 +15,7 @@ export default class extends Core {
         this.instance.scroll.y = window.pageYOffset;
 
         this.addElements();
-        this.detectElements();
+        if( this.autoStart ) this.detectElements();
 
         super.init();
     }

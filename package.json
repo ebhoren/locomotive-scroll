@@ -7,6 +7,10 @@
     "license": "MIT",
     "main": "dist/locomotive-scroll.js",
     "module": "dist/locomotive-scroll.esm.js",
+    "scripts": {
+        "build": "gulp build",
+        "compile": "gulp compile"
+    },
     "dependencies": {
         "smoothscroll-polyfill": "^0.4.4",
         "virtual-scroll": "git+https://github.com/ayamflow/virtual-scroll.git"
@@ -21,6 +25,8 @@
         "@modularbp/gulp-serve": "^1.0.5",
         "@modularbp/gulp-svg": "^1.0.5",
         "@modularbp/gulp-watch": "^1.0.5",
+        "gulp": "^4.0.2",
+        "gulp-cli": "^2.2.0",
         "gulp-header": "^2.0.9",
         "mbp": "^1.1.3",
         "merge-stream": "^2.0.0",
