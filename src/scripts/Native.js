@@ -1,14 +1,18 @@
 import Core from './Core';
+import smoothscroll from 'smoothscroll-polyfill';
 
 export default class extends Core {
     constructor(options = {}) {
         super(options);
 
+        // add behavior polyfill for safari
+        smoothscroll.polyfill();
+
         window.addEventListener('scroll', this.checkScroll, false);
     }
 
     init() {
-        this.instance.scroll.y = window.scrollY;
+        this.instance.scroll.y = window.pageYOffset;
 
         this.addElements();
         this.detectElements();
@@ -19,9 +23,9 @@ export default class extends Core {
     checkScroll() {
         super.checkScroll();
 
-        if (this.els.length) {
-            this.instance.scroll.y = window.scrollY;
+        this.instance.scroll.y = window.pageYOffset;
 
+        if (this.els.length) {
             if(!this.hasScrollTicking) {
                 requestAnimationFrame(() => {
                     this.detectElements();
@@ -45,6 +49,7 @@ export default class extends Core {
     }
 
     addElements() {
+        this.els = [];
         const els = this.el.querySelectorAll('[data-'+this.name+']');
 
         els.forEach((el, i) => {
@@ -63,8 +68,9 @@ export default class extends Core {
                 repeat = this.repeat;
             }
 
-            this.els[i] = {
+            const mappedEl = {
                 el: el,
+                id: i,
                 class: cl,
                 top: top + offset,
                 bottom: bottom,
@@ -73,6 +79,8 @@ export default class extends Core {
                 inView: false,
                 call: call
             }
+
+            this.els.push(mappedEl);
         });
     }
 
@@ -124,7 +132,8 @@ export default class extends Core {
     }
 
     update() {
-        this.updateElements();
+        this.addElements();
+        this.detectElements();
     }
 
     destroy() {

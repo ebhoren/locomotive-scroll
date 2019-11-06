@@ -45,8 +45,9 @@ export default class extends Core {
             el: this.el,
             mouseMultiplier: (navigator.platform.indexOf('Win') > -1) ? 1 : 0.4,
             touchMultiplier: 4,
-            firefoxMultiplier: 30,
-            useKeyboard: false
+            firefoxMultiplier: this.firefoxMultiplier,
+            useKeyboard: false,
+            passive: true
         });
 
         this.vs.on((e) => {
@@ -227,8 +228,10 @@ export default class extends Core {
 
         this.scrollbar.append(this.scrollbarThumb);
         document.body.append(this.scrollbar);
-        this.scrollbarThumb.style.height = `${(window.innerHeight * window.innerHeight) / (this.instance.limit + window.innerHeight)}px`;
-        this.scrollBarLimit = window.innerHeight - this.scrollbarThumb.getBoundingClientRect().height;
+
+        this.scrollbarHeight = this.scrollbar.getBoundingClientRect().height;
+        this.scrollbarThumb.style.height = `${(this.scrollbarHeight * this.scrollbarHeight) / (this.instance.limit + this.scrollbarHeight)}px`;
+        this.scrollBarLimit = this.scrollbarHeight - this.scrollbarThumb.getBoundingClientRect().height;
 
         this.getScrollBar = this.getScrollBar.bind(this);
         this.releaseScrollBar = this.releaseScrollBar.bind(this);
@@ -240,8 +243,9 @@ export default class extends Core {
     }
 
     reinitScrollBar() {
-        this.scrollbarThumb.style.height = `${(window.innerHeight * window.innerHeight) / this.instance.limit}px`;
-        this.scrollBarLimit = window.innerHeight - this.scrollbarThumb.getBoundingClientRect().height;
+        this.scrollbarHeight = this.scrollbar.getBoundingClientRect().height;
+        this.scrollbarThumb.style.height = `${(this.scrollbarHeight * this.scrollbarHeight) / this.instance.limit}px`;
+        this.scrollBarLimit = this.scrollbarHeight - this.scrollbarThumb.getBoundingClientRect().height;
     }
 
     destroyScrollBar() {
@@ -267,7 +271,7 @@ export default class extends Core {
     moveScrollBar(e) {
         if (!this.isTicking && this.isDraggingScrollbar) {
             requestAnimationFrame(() => {
-                let y = (e.clientY * 100 / (window.innerHeight)) * this.instance.limit / 100;
+                let y = (e.clientY * 100 / (this.scrollbarHeight)) * this.instance.limit / 100;
 
                 if(y > 0 && y < this.instance.limit) {
                     this.instance.delta.y = y;
@@ -281,7 +285,6 @@ export default class extends Core {
     addElements() {
         this.els = []
         this.parallaxElements = []
-        let count = 0;
 
         this.sections.forEach((section, y) => {
             const els = this.sections[y].el.querySelectorAll(`[data-${this.name}]`);
@@ -317,8 +320,10 @@ export default class extends Core {
                 let middle = ((bottom - top) / 2) + top;
 
                 if(sticky) {
+                    const elDistance = el.getBoundingClientRect().top - top;
+
                     top += window.innerHeight;
-                    bottom = top + targetEl.offsetHeight - window.innerHeight - el.offsetHeight;
+                    bottom = top + targetEl.offsetHeight - window.innerHeight - el.offsetHeight - elDistance;
                     middle = ((bottom - top) / 2) + top;
                 }
 
@@ -343,7 +348,7 @@ export default class extends Core {
 
                 const mappedEl = {
                     el,
-                    id: count,
+                    id: i,
                     class: cl,
                     top: top + relativeOffset[0],
                     middle,
@@ -360,7 +365,6 @@ export default class extends Core {
                     sticky
                 }
 
-                count++;
                 this.els.push(mappedEl);
 
                 if(speed !== false || sticky) {
@@ -405,14 +409,13 @@ export default class extends Core {
         let transform;
 
         if(!delay) {
-            transform = `matrix(1,0,0,1,${x},${y})`
-
+            transform = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,${x},${y},0,1)`;
         } else {
             let start = getTranslate(element);
             let lerpX = lerp(start.x, x, delay);
             let lerpY = lerp(start.y, y, delay);
 
-            transform = `matrix(1,0,0,1,${lerpX},${lerpY})`
+            transform = `matrix3d(1,0,0.00,0,0.00,1,0.00,0,0,0,1,0,${lerpX},${lerpY},0,1)`;
         }
 
         element.style.webkitTransform = transform;
@@ -540,6 +543,7 @@ export default class extends Core {
         this.detectElements();
         this.updateScroll();
         this.transformElements(true);
+        this.reinitScrollBar();
     }
 
     startScroll() {
