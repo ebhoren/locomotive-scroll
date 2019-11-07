@@ -339,8 +339,7 @@
         }
 
         if (event === 'call') {
-          this.hasCallEventSet = true;
-          this.detectElements(true);
+          this.hasCallEventSet = true; //this.detectElements(true);
         }
       }
     }, {

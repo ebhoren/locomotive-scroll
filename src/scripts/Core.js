@@ -160,7 +160,7 @@ export default class {
 
         if (event === 'call') {
             this.hasCallEventSet = true;
-            this.detectElements(true);
+            //this.detectElements(true);
         }
     }
 
