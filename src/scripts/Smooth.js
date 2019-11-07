@@ -24,7 +24,7 @@ export default class extends Core {
         this.hasScrollTicking = false;
         this.parallaxElements = [];
         this.inertiaRatio = 1;
-        this.stop = this.autoStart;
+        this.stop = !this.autoStart;
 
         this.checkKey = this.checkKey.bind(this);
         window.addEventListener('keydown', this.checkKey, false);

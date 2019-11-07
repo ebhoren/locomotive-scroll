@@ -1602,7 +1602,7 @@ function (_Core) {
     _this.hasScrollTicking = false;
     _this.parallaxElements = [];
     _this.inertiaRatio = 1;
-    _this.stop = _this.autoStart;
+    _this.stop = !_this.autoStart;
     _this.checkKey = _this.checkKey.bind(_assertThisInitialized(_this));
     window.addEventListener('keydown', _this.checkKey, false);
     return _this;
