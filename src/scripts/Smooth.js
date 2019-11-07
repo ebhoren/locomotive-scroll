@@ -183,7 +183,7 @@ export default class extends Core {
     checkResize() {
         this.windowHeight = window.innerHeight;
         this.windowMiddle = this.windowHeight / 2;
-        this.update();
+        if( !this.stop ) this.update();
     }
 
     updateDelta(e) {

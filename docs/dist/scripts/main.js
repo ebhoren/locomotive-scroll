@@ -1779,7 +1779,7 @@
       value: function checkResize() {
         this.windowHeight = window.innerHeight;
         this.windowMiddle = this.windowHeight / 2;
-        this.update();
+        if (!this.stop) this.update();
       }
     }, {
       key: "updateDelta",
