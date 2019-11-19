@@ -131,10 +131,10 @@ export default class {
 
     dispatchCall(current, way) {
         this.callWay = way;
-        this.callValue = current.call.split(',').map(item => item.trim());
+        this.callValue = current.call;//current.call.split(',').map(item => item.trim());
         this.callObj = current;
 
-        if (this.callValue.length == 1) this.callValue = this.callValue[0];
+        //if (this.callValue.length == 1) this.callValue = this.callValue[0];
 
         const callEvent = new Event(this.namespace + 'call');
         this.el.dispatchEvent(callEvent);
