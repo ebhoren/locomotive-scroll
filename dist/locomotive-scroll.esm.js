@@ -169,6 +169,8 @@ var defaults = {
   firefoxMultiplier: 50
 };
 
+var UDID = 0;
+
 var _default =
 /*#__PURE__*/
 function () {
@@ -399,6 +401,18 @@ function () {
       this.scrollToEls.forEach(function (el) {
         el.removeEventListener('click', _this4.setScrollTo, false);
       });
+    }
+  }, {
+    key: "_getElementUDID",
+    value: function _getElementUDID(el) {
+      var udid = el.dataset[this.name + 'Udid'];
+
+      if (!udid) {
+        udid = UDID++;
+        el.dataset[this.name + 'Udid'] = udid;
+      }
+
+      return udid;
     }
   }]);
 
@@ -933,7 +947,7 @@ function (_Core) {
 
         var mappedEl = {
           el: el,
-          id: i,
+          id: _this4._getElementUDID(el),
           "class": cl,
           top: top + offset,
           bottom: bottom,
@@ -1949,7 +1963,7 @@ function (_Core) {
 
           var mappedEl = {
             el: el,
-            id: i,
+            id: _this6._getElementUDID(el),
             "class": cl,
             top: top + relativeOffset[0],
             middle: middle,

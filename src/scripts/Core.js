@@ -1,5 +1,7 @@
 import { defaults } from './options';
 
+let UDID = 0;
+
 export default class {
     constructor(options = {}) {
         window.scrollTo(0,0);
@@ -219,5 +221,16 @@ export default class {
         this.scrollToEls.forEach((el) => {
             el.removeEventListener('click', this.setScrollTo, false);
         });
+    }
+
+    _getElementUDID(el) {
+        let udid = el.dataset[this.name + 'Udid'];
+
+        if( !udid ) {
+            udid = UDID++;
+            el.dataset[this.name + 'Udid'] = udid;
+        }
+
+        return udid;
     }
 }
