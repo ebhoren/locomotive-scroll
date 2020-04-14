@@ -897,8 +897,6 @@
       value: function checkScroll() {
         var _this2 = this;
 
-        _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
-
         this.instance.scroll.y = window.pageYOffset;
 
         if (this.els.length) {
@@ -909,6 +907,8 @@
             this.hasScrollTicking = true;
           }
         }
+
+        _get(_getPrototypeOf(_default.prototype), "checkScroll", this).call(this);
       }
     }, {
       key: "checkResize",
