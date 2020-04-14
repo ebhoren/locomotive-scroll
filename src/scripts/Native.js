@@ -21,8 +21,6 @@ export default class extends Core {
     }
 
     checkScroll() {
-        super.checkScroll();
-
         this.instance.scroll.y = window.pageYOffset;
 
         if (this.els.length) {
@@ -33,6 +31,8 @@ export default class extends Core {
                 this.hasScrollTicking = true;
             }
         }
+
+        super.checkScroll();
     }
 
     checkResize() {
